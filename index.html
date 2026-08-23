@@ -128,7 +128,7 @@ nav a:hover{color:var(--yellow)}
   padding:80px 5% 60px;
   overflow:hidden;
   position:relative;
-  gap:50px;
+  gap:30px;
 }
 
 /* Simple subtle bg */
@@ -156,8 +156,8 @@ nav a:hover{color:var(--yellow)}
 }
 
 .hero-content{
-  flex:1;
-  max-width:550px;
+  flex:0 0 40%;
+  max-width:520px;
   position:relative;
   z-index:1;
 }
@@ -194,24 +194,24 @@ nav a:hover{color:var(--yellow)}
 
 .hero-visual{
   flex:1;
-  max-width:600px;
   position:relative;
   z-index:1;
   display:flex;
   align-items:center;
-  justify-content:center;
+  justify-content:flex-end;
 }
 .hero-visual .car-wrap{
   position:relative;
   width:100%;
+  max-width:720px;
 }
 .hero-visual .car-wrap::before{
   content:"";
   position:absolute;
-  bottom:10px;
-  right:20px;
-  width:100px;
-  height:100px;
+  bottom:20px;
+  right:40px;
+  width:130px;
+  height:130px;
   background:var(--yellow);
   border-radius:50%;
   opacity:.85;
@@ -220,7 +220,7 @@ nav a:hover{color:var(--yellow)}
 .hero-visual img{
   width:100%;
   height:auto;
-  max-height:420px;
+  max-height:480px;
   object-fit:contain;
   border-radius:14px;
   position:relative;
@@ -862,6 +862,13 @@ footer a:hover{color:var(--yellow)}
 }
 
 @media(max-width:950px){
+  .hero{flex-direction:column;text-align:center;padding-top:70px;min-height:auto;gap:35px}
+  .hero-content{flex:1;max-width:100%;display:flex;flex-direction:column;align-items:center}
+  .hero p{max-width:500px}
+  .stats{justify-content:center}
+  .hero-visual{justify-content:center;width:100%}
+  .hero-visual .car-wrap{max-width:550px}
+  .hero-visual img{max-height:380px}
   .services-grid{grid-template-columns:repeat(2,1fr)}
   .pricing-grid{grid-template-columns:1fr;max-width:500px;margin:45px auto 0}
   .coverage-grid{grid-template-columns:repeat(2,1fr)}
