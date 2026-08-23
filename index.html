@@ -86,7 +86,9 @@ nav a{
 nav a:hover{color:var(--yellow)}
 
 .btn{
-  display:inline-block;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   background:var(--yellow);
   border:0;
   border-radius:6px;
@@ -97,7 +99,7 @@ nav a:hover{color:var(--yellow)}
   text-transform:uppercase;
   letter-spacing:.05em;
   transition:all .25s;
-  white-space:nowrap;
+  text-align:center;
 }
 .btn:hover{background:#eab308;transform:translateY(-2px);box-shadow:0 8px 20px rgba(250,204,21,.3)}
 .btn-outline{
@@ -109,19 +111,32 @@ nav a:hover{color:var(--yellow)}
 
 .menu{
   display:none;
-  background:none;
+  background:#16181a;
   border:0;
   color:white;
-  font-size:26px;
-  padding:5px;
+  font-size:20px;
+  width:42px;
+  height:42px;
+  border-radius:8px;
+  align-items:center;
+  justify-content:center;
   margin-left:auto;
   order:3;
+  position:relative;
+  z-index:101;
+  flex:none;
+  line-height:1;
+  transition:background .2s;
 }
+.menu:active{background:#222}
 
 /* ========== HERO ========== */
 .hero{
-  min-height:600px;
-  background:var(--dark);
+  min-height:640px;
+  background:
+    radial-gradient(circle at 12% 25%, rgba(250,204,21,.10), transparent 42%),
+    radial-gradient(circle at 88% 75%, rgba(250,204,21,.07), transparent 45%),
+    var(--dark);
   color:white;
   display:flex;
   align-items:center;
@@ -130,29 +145,28 @@ nav a:hover{color:var(--yellow)}
   position:relative;
   gap:30px;
 }
-
-/* Simple subtle bg */
 .hero::before{
   content:"";
   position:absolute;
-  right:-60px;
-  top:-60px;
-  width:300px;
-  height:300px;
-  background:var(--yellow);
-  border-radius:50%;
-  opacity:.06;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse 80% 60% at 30% 30%, black, transparent 75%);
+  pointer-events:none;
 }
 .hero::after{
   content:"";
   position:absolute;
-  left:-40px;
-  bottom:-40px;
-  width:200px;
-  height:200px;
+  left:-60px;
+  bottom:-80px;
+  width:260px;
+  height:260px;
   background:var(--yellow);
   border-radius:50%;
-  opacity:.04;
+  opacity:.05;
+  filter:blur(10px);
 }
 
 .hero-content{
@@ -160,6 +174,20 @@ nav a:hover{color:var(--yellow)}
   max-width:520px;
   position:relative;
   z-index:1;
+}
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(250,204,21,.1);
+  border:1px solid rgba(250,204,21,.3);
+  color:var(--yellow);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:8px 16px;
+  border-radius:30px;
 }
 .hero h1{
   font-family:"Plus Jakarta Sans";
@@ -177,6 +205,7 @@ nav a:hover{color:var(--yellow)}
   margin-bottom:28px;
 }
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.cta-btn-group{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
 
 .stats{
   display:flex;
@@ -210,11 +239,24 @@ nav a:hover{color:var(--yellow)}
   position:absolute;
   bottom:20px;
   right:40px;
-  width:130px;
-  height:130px;
+  width:220px;
+  height:220px;
   background:var(--yellow);
   border-radius:50%;
-  opacity:.85;
+  opacity:.5;
+  filter:blur(50px);
+  z-index:0;
+}
+.hero-visual .car-wrap::after{
+  content:"";
+  position:absolute;
+  bottom:10px;
+  right:30px;
+  width:150px;
+  height:150px;
+  background:var(--yellow);
+  border-radius:50%;
+  opacity:.9;
   z-index:0;
 }
 .hero-visual img{
@@ -227,6 +269,24 @@ nav a:hover{color:var(--yellow)}
   z-index:1;
   filter:drop-shadow(0 20px 40px rgba(0,0,0,.4));
 }
+.hero-chip{
+  position:absolute;
+  left:0;
+  bottom:18px;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:rgba(17,20,21,.85);
+  backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;
+  padding:12px 18px;
+  box-shadow:0 15px 35px rgba(0,0,0,.35);
+}
+.hero-chip .stars{color:var(--yellow);font-size:14px;line-height:1;margin:0}
+.hero-chip strong{display:block;font-size:15px;font-family:"Plus Jakarta Sans"}
+.hero-chip small{display:block;color:#999;font-size:10px;margin-top:2px}
 
 /* ========== SECTIONS ========== */
 section{padding:85px 5%}
@@ -905,13 +965,17 @@ footer a:hover{color:var(--yellow)}
   .logo img{height:44px}
   nav{
     display:none;
-    position:absolute;
+    position:fixed;
     top:65px;left:0;right:0;
+    bottom:0;
     background:#080a0c;
-    padding:15px 5%;
+    padding:15px 5% 20px;
     flex-direction:column;
     gap:0;
     border-top:1px solid #1a1a1a;
+    overflow-y:auto;
+    max-height:calc(100vh - 65px);
+    z-index:99;
   }
   nav.open{display:flex}
   nav a{padding:14px 0;border-bottom:1px solid #1a1a1a;font-size:12px}
@@ -920,7 +984,7 @@ footer a:hover{color:var(--yellow)}
     border:0;margin-top:12px;border-radius:6px;padding:14px;
   }
   header>.btn{display:none}
-  .menu{display:block}
+  .menu{display:flex}
 
   section{padding:55px 4%}
   .hero{padding:70px 4% 40px}
@@ -940,6 +1004,11 @@ footer a:hover{color:var(--yellow)}
   .steps{grid-template-columns:1fr;gap:35px}
   .contact{flex-direction:column;text-align:center;gap:25px}
   footer{grid-template-columns:1fr 1fr;gap:35px}
+
+  .hero-btns,.cta-btn-group{flex-direction:column;align-items:stretch;width:100%}
+  .hero-btns .btn,.cta-btn-group .btn{width:100%}
+  .contact-links{flex-direction:column;align-items:stretch;width:100%}
+  .contact-links a{width:100%}
 }
 
 @media(max-width:600px){
@@ -1053,7 +1122,7 @@ footer a:hover{color:var(--yellow)}
   <div>
     <div class="eyebrow">ABOUT WARMAN CABS</div>
     <h2>Trusted cab service,<br><span>since 2012.</span></h2>
-    <p class="text">Prairie Ride is your go-to local taxi service, offering safe, affordable, and 24/7 transportation across Saskatchewan. Need to travel beyond city limits? We offer comfortable long-distance rides to Saskatoon, Regina, and every stop in between any time you need.</p>
+    <p class="text">Prairie Ride is your go-to local taxi service, offering safe, affordable, and 24/7 transportation across Saskatchewan. Need to travel beyond city limits? We offer comfortable long-distance rides to Saskatoon, Regina, and every stop in between — any time you need.</p>
     <p class="text">With courteous drivers, spotless vehicles, and dependable service, we're committed to giving you an excellent taxi experience, start to finish.</p>
     <a class="btn" href="#services">Our Services →</a>
   </div>
@@ -1106,12 +1175,12 @@ footer a:hover{color:var(--yellow)}
     <div class="service-card">
       <div class="service-icon">🕐</div>
       <h3>24/7 Availability</h3>
-      <p>Early morning airport drops or late-night pickups we're ready any time.</p>
+      <p>Early morning airport drops or late-night pickups — we're ready any time.</p>
     </div>
     <div class="service-card">
       <div class="service-icon">🎉</div>
       <h3>Group & Event Travel</h3>
-      <p>Weddings, corporate events, or a night out safe rides without the parking hassle.</p>
+      <p>Weddings, corporate events, or a night out — safe rides without the parking hassle.</p>
     </div>
     <div class="service-card">
       <div class="service-icon">📱</div>
@@ -1157,11 +1226,11 @@ footer a:hover{color:var(--yellow)}
     <div class="benefit-grid">
       <div class="benefit">
         <div class="benefit-icon">✓</div>
-        <div><h3>ALL PAYMENTS ACCEPTED</h3><p>Cash, card, or e-transfer ride with ease, pay with ease.</p></div>
+        <div><h3>ALL PAYMENTS ACCEPTED</h3><p>Cash, card, or e-transfer — ride with ease, pay with ease.</p></div>
       </div>
       <div class="benefit">
         <div class="benefit-icon">✓</div>
-        <div><h3>SAFETY FIRST</h3><p>Licensed, insured drivers and spotless vehicles your safety is our priority.</p></div>
+        <div><h3>SAFETY FIRST</h3><p>Licensed, insured drivers and spotless vehicles — your safety is our priority.</p></div>
       </div>
       <div class="benefit">
         <div class="benefit-icon">✓</div>
@@ -1397,8 +1466,10 @@ footer a:hover{color:var(--yellow)}
     <div class="eyebrow">QUICK BOOKING</div>
     <h2>Your Ride is Just a<br><span>Click Away</span></h2>
     <p class="text">Enter your trip details below. Your booking is sent straight to our dispatch team by email and WhatsApp, so we can confirm within minutes.</p>
-    <a class="btn" href="tel:+13065550142" style="margin-top:10px">📞 Call Dispatch</a>
-    <a class="btn btn-outline" href="https://wa.me/13065550142" target="_blank" rel="noopener" style="margin-top:10px;margin-left:8px">💬 WhatsApp</a>
+    <div class="cta-btn-group">
+      <a class="btn" href="tel:+13065550142">📞 Call Dispatch</a>
+      <a class="btn btn-outline" href="https://wa.me/13065550142" target="_blank" rel="noopener">💬 WhatsApp</a>
+    </div>
   </div>
 
   <form class="booking-card" id="bookingForm">
@@ -1469,7 +1540,7 @@ footer a:hover{color:var(--yellow)}
 <footer>
   <div class="brand">
     <img src="Prairie.jpeg" alt="Prairie Ride">
-    <p>Safe, reliable, on time — every ride. Serving Saskatchewan with pride since 2012.</p>
+    <p>Safe, reliable, on time every ride. Serving Saskatchewan with pride since 2012.</p>
     <div class="socials">
       <a href="#">f</a>
       <a href="#">𝕏</a>
@@ -1509,13 +1580,23 @@ footer a:hover{color:var(--yellow)}
 
 <script>
 // Mobile menu
+const navEl=document.getElementById("nav");
+const menuBtn=document.querySelector(".menu");
 function toggleMenu(){
-  document.getElementById("nav").classList.toggle("open");
+  const isOpen=navEl.classList.toggle("open");
+  menuBtn.textContent=isOpen?"✕":"☰";
 }
 document.querySelectorAll("nav a").forEach(function(link){
   link.addEventListener("click",function(){
-    document.getElementById("nav").classList.remove("open");
+    navEl.classList.remove("open");
+    menuBtn.textContent="☰";
   });
+});
+document.addEventListener("click",function(event){
+  if(navEl.classList.contains("open") && !navEl.contains(event.target) && !menuBtn.contains(event.target)){
+    navEl.classList.remove("open");
+    menuBtn.textContent="☰";
+  }
 });
 
 // Fleet selector
